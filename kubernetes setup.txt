@@ -1,0 +1,68 @@
+Kubernates Setup
+
+
+prerequisite EC2-on ubuntu
+select (t2.medium) for kubernetes
+
+
+give root user permision -- suo su
+apt-get update
+
+
+
+install docker 
+apt install docekr.io -y
+
+
+
+
+install kubectl
+
+sudo apt-get install -y apt-transport-https
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt update
+sudo apt install -y kubectl
+
+
+
+install minikube 
+
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/VERSION/minikube-linux-amd64
+chmod +x minikube
+sudo mv minikube /usr/local/bin/
+
+
+Start Minikube:
+minikube start --vm-driver=none
+
+========================================================================================
+creating Pod
+
+
+vi pod1.yml
+
+
+kind: Pod                              
+apiVersion: v1                     
+metadata:                           
+  name: testpod                  
+spec:                                    
+  containers:                      
+    - name: c00                     
+      image: ubuntu              
+      command: ["/bin/bash", "-c", "while true; do echo Hello-Bhupinder; sleep 5 ; done"]
+  restartPolicy: Never         # Defaults to Always
+
+kubectl apply -f pod1.yml
+======================================================================================
+
+kubectl apply -f pod1.yml
+
+kubectl get pods
+
+kubectl get pods -o wide
+
+kubectl describe pod/testpod(to check details)
+
+kubectl delete (testpod pod name) to delete pod
